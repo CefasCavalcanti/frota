@@ -1,11 +1,13 @@
 'use client'
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '@/app/counter/counterSlice'
+import assetReducer from '@/app/asset/assetSlice'
 // ...
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer
+    counter: counterReducer,
+    asset: assetReducer
   }
 })
 
