@@ -10,6 +10,8 @@ import {
 } from '@mui/x-data-grid'
 import { selectAssets } from '../assetSlice'
 import { IconButton } from '@mui/material'
+import Link from 'next/link'
+
 const activeRenderCells = (row: GridRenderCellParams) => (
   <span>
     {row.value ? (
@@ -31,6 +33,13 @@ function renderActionsCell(params: GridRenderCellParams) {
     </IconButton>
   )
 }
+function renderNameCell(rowData: GridRenderCellParams) {
+  return (
+    <Link style={{ textDecoration: 'none' }} href={`/asset/${rowData.id}/edit`}>
+      <p color="primary">{rowData.value}</p>
+    </Link>
+  )
+}
 export const AssetDataGrid = () => {
   const assets = useAppSelector(selectAssets)
   const rows: GridRowsProp = assets.map((asset) => ({
@@ -42,7 +51,7 @@ export const AssetDataGrid = () => {
   }))
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Name', flex: 1 },
+    { field: 'name', headerName: 'Name', flex: 1, renderCell: renderNameCell },
     { field: 'prefix', headerName: 'Prefix', flex: 1 },
     { field: 'order', headerName: 'Order', flex: 1 },
     {
@@ -66,7 +75,7 @@ export const AssetDataGrid = () => {
         rows={rows}
         columns={columns}
         slots={{ toolbar: GridToolbar }}
-        disableColumnSelector
+        // disableColumnSelector
         disableColumnFilter
         disableDensitySelector
         disableRowSelectionOnClick
@@ -74,7 +83,7 @@ export const AssetDataGrid = () => {
           toolbar: {
             showQuickFilter: true,
             quickFilterProps: {
-              variant: 'outlined',
+              variant: 'standard',
               size: 'small',
               debounceMs: 500
             }
