@@ -1,9 +1,54 @@
 'use client'
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from '../client/store'
-import { GetAssetOutputDto, assets } from './asset'
+import { FindAssetOutputDto, assets } from './asset'
+import { apiSlice } from '../client/api_slice'
+const endpointUrl = '/asset'
+export interface AssetParams {
+  page?: number
+  perPage?: number
+  search?: string
+  isActive?: boolean
+}
+function parseQueryParams(params: AssetParams) {
+  const query = new URLSearchParams()
 
-const initialState: GetAssetOutputDto[] = assets
+  if (params.page) {
+    query.append('page', params.page.toString())
+  }
+
+  if (params.perPage) {
+    query.append('per_page', params.perPage.toString())
+  }
+
+  if (params.search) {
+    query.append('search', params.search)
+  }
+
+  if (params.isActive) {
+    query.append('is_active', params.isActive.toString())
+  }
+
+  return query.toString()
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getAssets({ page = 1, perPage = 10, search = '' }) {
+  const params = { page, perPage, search, isActive: true }
+
+  return `${endpointUrl}?${parseQueryParams(params)}`
+}
+export const assetsApiSlice = apiSlice.injectEndpoints({
+  endpoints: ({ query }) => ({
+    allAssets: query<{ data: FindAssetOutputDto[] }, AssetParams>({
+      query: () => 'asset',
+      providesTags: ['Assets']
+    })
+  })
+})
+
+export const { useAllAssetsQuery } = assetsApiSlice
+
+const initialState: FindAssetOutputDto[] = assets
 export const assetsSlice = createSlice({
   name: 'assets',
   initialState,

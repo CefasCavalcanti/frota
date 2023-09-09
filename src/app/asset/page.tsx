@@ -2,7 +2,7 @@ import React from 'react'
 import { AssetDataGrid } from './components/AssetDataGrid'
 import { CreateAssetButton } from './components/button/CreateAssetButton'
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="flex flex-col  w-full">
       <div className="flex justify-between  shadow-md m-4  p-8">

@@ -34,6 +34,13 @@ export async function GET() {
     }
   ]
 
+  function timeout() {
+    return new Promise((resolve) => setTimeout(resolve, 2000))
+  }
+  async function sleep() {
+    await timeout()
+  }
+  await sleep()
   return NextResponse.json({
     data: assets,
     status: 200,

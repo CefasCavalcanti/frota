@@ -1,4 +1,4 @@
-export interface GetAssetOutputDto {
+export interface FindAssetOutputDto {
   id: string
   name: string
   license_plate: string

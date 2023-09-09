@@ -1,5 +1,5 @@
 'use client'
-import { useAppDispatch, useAppSelector } from '@/app/client/hooks'
+import { useAppDispatch } from '@/app/client/hooks'
 import {
   DataGrid,
   GridRowsProp,
@@ -8,11 +8,12 @@ import {
   GridDeleteIcon,
   GridToolbar
 } from '@mui/x-data-grid'
-import { deleteAsset, selectAssets } from '../assetSlice'
+import { deleteAsset, useAllAssetsQuery } from '../assetSlice'
 import { IconButton } from '@mui/material'
 import Link from 'next/link'
 import { MouseEventHandler } from 'react'
 import { useSnackbar } from 'notistack'
+import { FindAssetOutputDto } from '../asset'
 
 const activeRenderCells = (row: GridRenderCellParams) => (
   <span>
@@ -42,7 +43,12 @@ function renderNameCell(rowData: GridRenderCellParams) {
   )
 }
 export const AssetDataGrid = () => {
-  const assets = useAppSelector(selectAssets)
+  const { data, isLoading } = useAllAssetsQuery({})
+  let assets: FindAssetOutputDto[] = []
+  if (data!) {
+    assets = data.data
+  }
+
   const { enqueueSnackbar } = useSnackbar()
   const dispatch = useAppDispatch()
   const rows: GridRowsProp = assets.map((asset) => ({
@@ -77,7 +83,7 @@ export const AssetDataGrid = () => {
     }
   ]
   return (
-    <div className="box-border mx-4  w-[calc(100%-30px)] shadow-md rounded-md">
+    <div className="box-border mx-4  w-[calc(100%-30px)] shadow-md rounded-md h-[calc(100vh-300px)]">
       <DataGrid
         rows={rows}
         columns={columns}
@@ -85,7 +91,10 @@ export const AssetDataGrid = () => {
         // disableColumnSelector
         disableColumnFilter
         disableDensitySelector
+        paginationMode="server"
+        loading={isLoading ?? true}
         disableRowSelectionOnClick
+        rowCount={isLoading ? rows.length : 1}
         slotProps={{
           toolbar: {
             showQuickFilter: true,
