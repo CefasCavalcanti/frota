@@ -1,5 +1,6 @@
 import * as z from 'Zod'
 export const assetSchema = z.object({
+  id: z.string().readonly().nullable().default('no id'),
   order: z.string().max(4).min(1),
   license_plate: z
     .string()

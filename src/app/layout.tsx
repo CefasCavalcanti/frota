@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -20,11 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <main className="min-h-screen">
-        <Providers>
-          <Header />
-          {children}
-        </Providers>
+        <main className="relative h-screen pt-28 bg-green-50 rounded-md">
+          <Providers>
+            <Header />
+            <div className="shadow-lg h-full mx-10 bg-white">{children}</div>
+          </Providers>
         </main>
       </body>
     </html>

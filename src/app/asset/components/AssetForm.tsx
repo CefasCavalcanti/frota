@@ -3,13 +3,34 @@ import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Asset, assetSchema } from '../schema'
 import { AssetFormFields } from './form_fields'
+import { useAppDispatch, useAppSelector } from '@/app/client/hooks'
+import { createAsset, selectAssetById, updateAsset } from '../assetSlice'
+import { useSnackbar } from 'notistack'
 
-const CreateAssetForm = () => {
+const AssetForm = ({ id }: { id?: string }) => {
+  let asset = useAppSelector((state) => selectAssetById(state, id ?? ''))
+  const dispatch = useAppDispatch()
+  const { enqueueSnackbar } = useSnackbar()
+
   const methods = useForm<Asset>({
-    resolver: zodResolver(assetSchema)
+    resolver: zodResolver(assetSchema),
+    defaultValues: asset && {
+      is_active: asset.is_active,
+      license_plate: asset.license_plate,
+      model: asset.model,
+      order: asset.order.toString(),
+      prefix: asset.prefix,
+      id: asset.id
+    }
   })
-
-  const onSubmit: SubmitHandler<Asset> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<Asset> = async (data) => {
+    id! ? dispatch(updateAsset(data)) : dispatch(createAsset(data))
+    id!
+      ? enqueueSnackbar('Success updating asset', { variant: 'success' })
+      : enqueueSnackbar('Success creating asset', { variant: 'success' })
+    methods.reset()
+    asset = undefined
+  }
   return (
     <FormProvider {...methods}>
       <form
@@ -29,4 +50,4 @@ const CreateAssetForm = () => {
   )
 }
 
-export default CreateAssetForm
+export default AssetForm

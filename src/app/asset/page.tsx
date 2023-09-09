@@ -1,10 +1,14 @@
 import React from 'react'
 import { AssetDataGrid } from './components/AssetDataGrid'
+import { CreateAssetButton } from './components/button/CreateAssetButton'
 
-export default function Page() {
+export default async function Page() {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="text-2xl"> Asset list</div>
+    <div className="flex flex-col  w-full">
+      <div className="flex justify-between  shadow-md m-4  p-8">
+        <p className="text-5xl"> Asset list</p>
+        <CreateAssetButton />
+      </div>
       <AssetDataGrid />
     </div>
   )

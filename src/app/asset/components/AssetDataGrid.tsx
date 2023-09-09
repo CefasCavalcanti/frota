@@ -1,5 +1,5 @@
 'use client'
-import { useAppSelector } from '@/app/client/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/client/hooks'
 import {
   DataGrid,
   GridRowsProp,
@@ -8,9 +8,11 @@ import {
   GridDeleteIcon,
   GridToolbar
 } from '@mui/x-data-grid'
-import { selectAssets } from '../assetSlice'
+import { deleteAsset, selectAssets } from '../assetSlice'
 import { IconButton } from '@mui/material'
 import Link from 'next/link'
+import { MouseEventHandler } from 'react'
+import { useSnackbar } from 'notistack'
 
 const activeRenderCells = (row: GridRenderCellParams) => (
   <span>
@@ -21,18 +23,17 @@ const activeRenderCells = (row: GridRenderCellParams) => (
     )}
   </span>
 )
-function renderActionsCell(params: GridRenderCellParams) {
-  return (
-    <IconButton
-      color="secondary"
-      onClick={() => console.log(params.value)}
-      aria-label="delete"
-      data-testid="delete-button"
-    >
-      <GridDeleteIcon />
-    </IconButton>
-  )
-}
+const renderActionsCell = (onClick: MouseEventHandler<HTMLButtonElement>) => (
+  <IconButton
+    color="secondary"
+    onClick={onClick}
+    aria-label="delete"
+    data-testid="delete-button"
+  >
+    <GridDeleteIcon />
+  </IconButton>
+)
+
 function renderNameCell(rowData: GridRenderCellParams) {
   return (
     <Link style={{ textDecoration: 'none' }} href={`/asset/${rowData.id}/edit`}>
@@ -42,9 +43,11 @@ function renderNameCell(rowData: GridRenderCellParams) {
 }
 export const AssetDataGrid = () => {
   const assets = useAppSelector(selectAssets)
+  const { enqueueSnackbar } = useSnackbar()
+  const dispatch = useAppDispatch()
   const rows: GridRowsProp = assets.map((asset) => ({
     id: asset.id,
-    name: asset.name,
+    name: asset.prefix + ' ' + asset.order,
     prefix: asset.prefix,
     order: asset.order,
     is_active: asset.is_active
@@ -66,11 +69,15 @@ export const AssetDataGrid = () => {
       headerName: 'Actions',
       type: 'string',
       flex: 1,
-      renderCell: renderActionsCell
+      renderCell: (params) =>
+        renderActionsCell(() => {
+          dispatch(deleteAsset(params.value))
+          enqueueSnackbar('Success deleting asset', { variant: 'success' })
+        })
     }
   ]
   return (
-    <div style={{ height: 300, width: '100%' }}>
+    <div className="box-border mx-4  w-[calc(100%-30px)] shadow-md rounded-md">
       <DataGrid
         rows={rows}
         columns={columns}
