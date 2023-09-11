@@ -1,5 +1,4 @@
 'use client'
-import { useAppDispatch } from '@/app/client/hooks'
 import {
   DataGrid,
   GridRowsProp,
@@ -8,10 +7,10 @@ import {
   GridDeleteIcon,
   GridToolbar
 } from '@mui/x-data-grid'
-import { deleteAsset, useAllAssetsQuery } from '../assetSlice'
+import { useAllAssetsQuery, useDeleteAssetMutation } from '../assetSlice'
 import { IconButton } from '@mui/material'
 import Link from 'next/link'
-import { MouseEventHandler } from 'react'
+import { MouseEventHandler, useEffect } from 'react'
 import { useSnackbar } from 'notistack'
 import { FindAssetOutputDto } from '../asset'
 
@@ -50,7 +49,16 @@ export const AssetDataGrid = () => {
   }
 
   const { enqueueSnackbar } = useSnackbar()
-  const dispatch = useAppDispatch()
+  const [deleteAsset, status] = useDeleteAssetMutation()
+  useEffect(() => {
+    if (status.isSuccess) {
+      enqueueSnackbar('Asset deleted successfully', { variant: 'success' })
+    }
+    if (status.error) {
+      enqueueSnackbar('Asset not deleted', { variant: 'error' })
+    }
+  }, [enqueueSnackbar, status.error, status.isSuccess])
+
   const rows: GridRowsProp = assets.map((asset) => ({
     id: asset.id,
     name: asset.prefix + ' ' + asset.order,
@@ -77,8 +85,7 @@ export const AssetDataGrid = () => {
       flex: 1,
       renderCell: (params) =>
         renderActionsCell(() => {
-          dispatch(deleteAsset(params.value))
-          enqueueSnackbar('Success deleting asset', { variant: 'success' })
+          deleteAsset({ id: params.value })
         })
     }
   ]

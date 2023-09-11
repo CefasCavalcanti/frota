@@ -1,12 +1,10 @@
 export interface FindAssetOutputDto {
-  id: string
-  name: string
+  id: string | null
+  is_active: boolean
   license_plate: string
   prefix: string
-  order: number
+  order: string
   model: string
-  manufacturing_date: string
-  is_active: boolean
 }
 
 export const assets = [

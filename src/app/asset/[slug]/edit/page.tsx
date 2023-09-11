@@ -1,5 +1,5 @@
 import React from 'react'
-import AssetForm from '../../components/AssetForm'
+import UpdateAssetForm from '../../components/UpdateAssetForm'
 
 export default function Page({ params }: { params: { slug: string } }) {
   return (
@@ -8,7 +8,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         {' '}
         Asset edit: {params.slug}
       </div>
-      <AssetForm id={params.slug} />
+      <UpdateAssetForm id={params.slug} />
     </div>
   )
 }
