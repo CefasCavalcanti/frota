@@ -19,10 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="relative min-h-screen pt-28 pb-5 bg-green-300 ">
+        <main className="relative min-h-screen pt-28 pb-5 bg-slate-200">
           <Providers>
             <Header />
-            <div className="shadow-lg min-h-full p-4 mx-10 rounded-lg bg-white">
+            <div className="shadow-lg min-h-[calc(100vh-140px)] p-4 mx-10 rounded-lg bg-white">
               {children}
             </div>
           </Providers>

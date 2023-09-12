@@ -5,7 +5,7 @@ import { FindAssetOutputDto } from './asset'
 import { apiSlice } from '../client/api_slice'
 import { assets } from '../api/asset/asset_mock'
 import { Asset } from './schema'
-const endpointUrl = '/asset'
+const endpointUrl = 'asset'
 export interface AssetParams {
   page?: number
   perPage?: number
@@ -34,22 +34,21 @@ function parseQueryParams(params: AssetParams) {
   return query.toString()
 }
 function createAssetMutation(asset: Asset) {
-  return { url: 'asset', method: 'POST', body: asset }
+  return { url: endpointUrl, method: 'POST', body: asset }
 }
 function updateAssetMutation(asset: Asset) {
   return {
-    url: `asset/${asset.id}`,
+    url: `${endpointUrl}/${asset.id}`,
     method: 'PUT',
     body: asset
   }
 }
 function deleteAssetMutation({ id }: { id: string }) {
   return {
-    url: `asset/${id}`,
+    url: `${endpointUrl}/${id}`,
     method: 'DELETE'
   }
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getAssets({ page = 1, perPage = 10, search = '' }) {
   const params = { page, perPage, search, isActive: true }
 
@@ -58,7 +57,7 @@ function getAssets({ page = 1, perPage = 10, search = '' }) {
 export const assetsApiSlice = apiSlice.injectEndpoints({
   endpoints: ({ query, mutation }) => ({
     allAssets: query<{ data: FindAssetOutputDto[] }, AssetParams>({
-      query: () => 'asset',
+      query: getAssets,
       providesTags: ['Assets']
     }),
     findAssets: query<{ data: FindAssetOutputDto }, { id: string }>({
