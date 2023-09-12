@@ -16,7 +16,7 @@ const UpdateAssetForm = ({ id }: { id: string }) => {
   const { enqueueSnackbar } = useSnackbar()
   useEffect(() => {
     if (UpdateStatus.isSuccess) {
-      enqueueSnackbar('Category updated successfully', { variant: 'success' })
+      enqueueSnackbar('Asset updated successfully', { variant: 'success' })
       setIsdisabled(false)
     }
     if (UpdateStatus.error) {
@@ -44,7 +44,7 @@ const UpdateAssetForm = ({ id }: { id: string }) => {
         className="px-8 pt-6 pb-8 mb-4"
         onSubmit={methods.handleSubmit(onSubmit)}
       >
-        <div className="mb-4 md:flex md:justify-between ">
+        <div className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 md:grid-cols-2 gap-4 ">
           <AssetFormFields.IsActive />
           <AssetFormFields.Prefix />
           <AssetFormFields.order />
