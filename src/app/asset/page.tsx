@@ -4,12 +4,14 @@ import { CreateAssetButton } from './components/button/CreateAssetButton'
 
 export default function Page() {
   return (
-    <div className="flex flex-col  w-full">
-      <div className="flex justify-between  shadow-md mb-4 p-6">
+    <div className="max-w-full flex h-full flex-col">
+      <div className="flex justify-between   m-3 p-6 bg-white">
         <p className="text-5xl"> Asset list</p>
         <CreateAssetButton />
       </div>
-      <AssetDataGrid />
+      <div className="flex justify-between  m-3  bg-white">
+        <AssetDataGrid />
+      </div>
     </div>
   )
 }

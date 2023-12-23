@@ -90,29 +90,28 @@ export const AssetDataGrid = () => {
     }
   ]
   return (
-    <div className="box-border mx-4  w-[calc(100%-30px)] shadow-md rounded-md h-[calc(100vh-300px)]">
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        slots={{ toolbar: GridToolbar }}
-        // disableColumnSelector
-        disableColumnFilter
-        disableDensitySelector
-        paginationMode="server"
-        loading={isLoading ?? true}
-        disableRowSelectionOnClick
-        rowCount={isLoading ? rows.length : 1}
-        slotProps={{
-          toolbar: {
-            showQuickFilter: true,
-            quickFilterProps: {
-              variant: 'standard',
-              size: 'small',
-              debounceMs: 500
-            }
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      slots={{ toolbar: GridToolbar }}
+      // disableColumnSelector
+      disableColumnFilter
+      disableDensitySelector
+      paginationMode="server"
+      loading={isLoading}
+      disableRowSelectionOnClick
+      rowCount={isLoading ? rows.length : 1}
+      sx={{ height: 400, position: 'initial', padding: 3 }}
+      slotProps={{
+        toolbar: {
+          showQuickFilter: true,
+          quickFilterProps: {
+            variant: 'standard',
+            size: 'small',
+            debounceMs: 500
           }
-        }}
-      />
-    </div>
+        }
+      }}
+    />
   )
 }

@@ -10,5 +10,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <main className="flex box-border  justify-start">{children}</main>
+  return <div>{children}</div>
 }

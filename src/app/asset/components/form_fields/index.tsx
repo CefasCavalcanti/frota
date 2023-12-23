@@ -38,7 +38,7 @@ function OrderInput() {
   return (
     <Input.Root id="order" label="Vehicle order">
       <Input.Field
-        type="number"
+        type="text"
         id="order"
         label="Vehicle order"
         register={register('order')}

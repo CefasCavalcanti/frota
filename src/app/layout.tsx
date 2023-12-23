@@ -21,12 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <main className="relative min-h-screen bg-slate-200">
+          <main className=" bg-slate-200 h-screen">
             <ResposiveLayout>
               <Header />
-              <div className="shadow-lg min-h-[calc(100vh-140px)] p-4 mx-10 rounded-lg bg-white">
-                {children}
-              </div>
+              {children}
             </ResposiveLayout>
           </main>
         </Providers>
